@@ -1,9 +1,7 @@
 <script setup lang='ts'>
-import type { DataTableColumns } from 'naive-ui'
-import { computed, h, ref, watch } from 'vue'
-import { NButton, NCard, NDataTable, NDivider, NInput, NLayoutContent, NMessageProvider, NModal, NPopconfirm, NSpace, NTabPane, NTabs, useMessage } from 'naive-ui'
+import { computed, ref, watch } from 'vue'
+import { NButton, NMessageProvider, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
 import PromptRecommend from '../../../assets/recommend.json'
-import { SvgIcon } from '..'
 import { usePromptStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { t } from '@/locales'
@@ -147,51 +145,51 @@ const clearPromptTemplate = () => {
   message.success(t('common.clearSuccess'))
 }
 
-const importPromptTemplate = () => {
-  try {
-    const jsonData = JSON.parse(tempPromptValue.value)
-    let key = ''
-    let value = ''
-    // 可以扩展加入更多模板字典的key
-    if ('key' in jsonData[0]) {
-      key = 'key'
-      value = 'value'
-    }
-    else if ('act' in jsonData[0]) {
-      key = 'act'
-      value = 'prompt'
-    }
-    else {
-      // 不支持的字典的key防止导入 以免破坏prompt商店打开
-      message.warning('prompt key not supported.')
-      throw new Error('prompt key not supported.')
-    }
+// const importPromptTemplate = () => {
+//   try {
+//     const jsonData = JSON.parse(tempPromptValue.value)
+//     let key = ''
+//     let value = ''
+//     // 可以扩展加入更多模板字典的key
+//     if ('key' in jsonData[0]) {
+//       key = 'key'
+//       value = 'value'
+//     }
+//     else if ('act' in jsonData[0]) {
+//       key = 'act'
+//       value = 'prompt'
+//     }
+//     else {
+//       // 不支持的字典的key防止导入 以免破坏prompt商店打开
+//       message.warning('prompt key not supported.')
+//       throw new Error('prompt key not supported.')
+//     }
 
-    for (const i of jsonData) {
-      if (!('key' in i) || !('value' in i))
-        throw new Error(t('store.importError'))
-      let safe = true
-      for (const j of promptList.value) {
-        if (j.key === i[key]) {
-          message.warning(t('store.importRepeatTitle', { msg: i[key] }))
-          safe = false
-          break
-        }
-        if (j.value === i[value]) {
-          message.warning(t('store.importRepeatContent', { msg: i[key] }))
-          safe = false
-          break
-        }
-      }
-      if (safe)
-        promptList.value.unshift({ key: i[key], value: i[value] } as never)
-    }
-    message.success(t('common.importSuccess'))
-  }
-  catch {
-    message.error('JSON 格式错误，请检查 JSON 格式')
-  }
-}
+//     for (const i of jsonData) {
+//       if (!('key' in i) || !('value' in i))
+//         throw new Error(t('store.importError'))
+//       let safe = true
+//       for (const j of promptList.value) {
+//         if (j.key === i[key]) {
+//           message.warning(t('store.importRepeatTitle', { msg: i[key] }))
+//           safe = false
+//           break
+//         }
+//         if (j.value === i[value]) {
+//           message.warning(t('store.importRepeatContent', { msg: i[key] }))
+//           safe = false
+//           break
+//         }
+//       }
+//       if (safe)
+//         promptList.value.unshift({ key: i[key], value: i[value] } as never)
+//     }
+//     message.success(t('common.importSuccess'))
+//   }
+//   catch {
+//     message.error('JSON 格式错误，请检查 JSON 格式')
+//   }
+// }
 
 // 模板导出
 const exportPromptTemplate = () => {
@@ -208,33 +206,33 @@ const exportPromptTemplate = () => {
 }
 
 // 模板在线导入
-const downloadPromptTemplate = async () => {
-  try {
-    importLoading.value = true
-    const response = await fetch(downloadURL.value)
-    const jsonData = await response.json()
-    if ('key' in jsonData[0] && 'value' in jsonData[0])
-      tempPromptValue.value = JSON.stringify(jsonData)
-    if ('act' in jsonData[0] && 'prompt' in jsonData[0]) {
-      const newJsonData = jsonData.map((item: { act: string; prompt: string }) => {
-        return {
-          key: item.act,
-          value: item.prompt,
-        }
-      })
-      tempPromptValue.value = JSON.stringify(newJsonData)
-    }
-    importPromptTemplate()
-    downloadURL.value = ''
-  }
-  catch {
-    message.error(t('store.downloadError'))
-    downloadURL.value = ''
-  }
-  finally {
-    importLoading.value = false
-  }
-}
+// const downloadPromptTemplate = async () => {
+//   try {
+//     importLoading.value = true
+//     const response = await fetch(downloadURL.value)
+//     const jsonData = await response.json()
+//     if ('key' in jsonData[0] && 'value' in jsonData[0])
+//       tempPromptValue.value = JSON.stringify(jsonData)
+//     if ('act' in jsonData[0] && 'prompt' in jsonData[0]) {
+//       const newJsonData = jsonData.map((item: { act: string; prompt: string }) => {
+//         return {
+//           key: item.act,
+//           value: item.prompt,
+//         }
+//       })
+//       tempPromptValue.value = JSON.stringify(newJsonData)
+//     }
+//     importPromptTemplate()
+//     downloadURL.value = ''
+//   }
+//   catch {
+//     message.error(t('store.downloadError'))
+//     downloadURL.value = ''
+//   }
+//   finally {
+//     importLoading.value = false
+//   }
+// }
 
 // 移动端自适应相关
 const renderTemplate = () => {
@@ -258,51 +256,51 @@ const pagination = computed(() => {
 })
 
 // table相关
-const createColumns = (): DataTableColumns<DataProps> => {
-  return [
-    {
-      title: t('store.title'),
-      key: 'renderKey',
-    },
-    {
-      title: t('store.description'),
-      key: 'renderValue',
-    },
-    {
-      title: t('common.action'),
-      key: 'actions',
-      width: 100,
-      align: 'center',
-      render(row) {
-        return h('div', { class: 'flex items-center flex-col gap-2' }, {
-          default: () => [h(
-            NButton,
-            {
-              tertiary: true,
-              size: 'small',
-              type: 'info',
-              onClick: () => changeShowModal('modify', row),
-            },
-            { default: () => t('common.edit') },
-          ),
-          h(
-            NButton,
-            {
-              tertiary: true,
-              size: 'small',
-              type: 'error',
-              onClick: () => deletePromptTemplate(row),
-            },
-            { default: () => t('common.delete') },
-          ),
-          ],
-        })
-      },
-    },
-  ]
-}
+// const createColumns = (): DataTableColumns<DataProps> => {
+//   return [
+//     {
+//       title: t('store.title'),
+//       key: 'renderKey',
+//     },
+//     {
+//       title: t('store.description'),
+//       key: 'renderValue',
+//     },
+//     {
+//       title: t('common.action'),
+//       key: 'actions',
+//       width: 100,
+//       align: 'center',
+//       render(row) {
+//         return h('div', { class: 'flex items-center flex-col gap-2' }, {
+//           default: () => [h(
+//             NButton,
+//             {
+//               tertiary: true,
+//               size: 'small',
+//               type: 'info',
+//               onClick: () => changeShowModal('modify', row),
+//             },
+//             { default: () => t('common.edit') },
+//           ),
+//           h(
+//             NButton,
+//             {
+//               tertiary: true,
+//               size: 'small',
+//               type: 'error',
+//               onClick: () => deletePromptTemplate(row),
+//             },
+//             { default: () => t('common.delete') },
+//           ),
+//           ],
+//         })
+//       },
+//     },
+//   ]
+// }
 
-const columns = createColumns()
+// const columns = createColumns()
 
 watch(
   () => promptList,
@@ -329,55 +327,56 @@ const dataSource = computed(() => {
     <NModal v-model:show="show" style="width: 90%; max-width: 900px;" preset="card">
       <div class="space-y-4">
         <NTabs type="segment">
-          <NTabPane name="local" :tab="$t('store.local')">
+          <!-- <NTabPane name="local" style="font-size: 50px;" :tab="$t('套餐类型')"> -->
+          <NTabPane name="">
             <div
               class="flex gap-3"
               :class="[isMobile ? 'flex-col' : 'flex-row justify-between']"
             >
               <div class="flex items-center space-x-4">
                 <NButton
-                  type="primary"
-                  size="small"
+                  type="success"
+                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
                   @click="changeShowModal('add')"
                 >
-                  {{ $t('common.add') }}
+                  50次<br><br>9.9元
                 </NButton>
                 <NButton
-                  size="small"
+                  type="error"
+                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
                   @click="changeShowModal('local_import')"
                 >
-                  {{ $t('common.import') }}
+                  一个月不限次<br><br>49元
                 </NButton>
                 <NButton
-                  size="small"
-                  :loading="exportLoading"
+                  type="info"
+                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
                   @click="exportPromptTemplate()"
                 >
-                  {{ $t('common.export') }}
+                  三个月不限次<br><br>99元
                 </NButton>
-                <NPopconfirm @positive-click="clearPromptTemplate">
-                  <template #trigger>
-                    <NButton size="small">
-                      {{ $t('common.clear') }}
-                    </NButton>
-                  </template>
-                  {{ $t('store.clearStoreConfirm') }}
-                </NPopconfirm>
+                <NButton
+                  type="warning"
+                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
+                  @click="exportPromptTemplate()"
+                >
+                  无限制次数<br><br>199元
+                </NButton>
               </div>
-              <div class="flex items-center">
+              <!-- <div class="flex items-center">
                 <NInput v-model:value="searchValue" style="width: 100%" />
-              </div>
+              </div> -->
             </div>
             <br>
-            <NDataTable
+            <!-- <NDataTable
               :max-height="400"
               :columns="columns"
               :data="dataSource"
               :pagination="pagination"
               :bordered="false"
-            />
+            /> -->
           </NTabPane>
-          <NTabPane name="download" :tab="$t('store.online')">
+          <!-- <NTabPane name="download" :tab="$t('store.online')">
             <p class="mb-4">
               {{ $t('store.onlineImportWarning') }}
             </p>
@@ -429,11 +428,11 @@ const dataSource = computed(() => {
                 </template>
               </NCard>
             </NLayoutContent>
-          </NTabPane>
+          </NTabPane> -->
         </NTabs>
       </div>
     </NModal>
-    <NModal v-model:show="showModal" style="width: 90%; max-width: 600px;" preset="card">
+    <!-- <NModal v-model:show="showModal" style="width: 90%; max-width: 600px;" preset="card">
       <NSpace v-if="modalMode === 'add' || modalMode === 'modify'" vertical>
         {{ t('store.title') }}
         <NInput v-model:value="tempPromptKey" />
@@ -464,6 +463,6 @@ const dataSource = computed(() => {
           {{ t('common.import') }}
         </NButton>
       </NSpace>
-    </NModal>
+    </NModal> -->
   </NMessageProvider>
 </template>
