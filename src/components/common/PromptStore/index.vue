@@ -4,6 +4,7 @@ import { NButton, NMessageProvider, NModal, NTabPane, NTabs, useMessage } from '
 import PromptRecommend from '../../../assets/recommend.json'
 import { usePromptStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
+import { post } from '@/utils/request'
 import { t } from '@/locales'
 
 interface DataProps {
@@ -59,22 +60,26 @@ const modalMode = ref('')
 const tempModifiedItem = ref<any>({})
 
 // 添加修改导入都使用一个Modal, 临时修改内容占用tempPromptKey,切换状态前先将内容都清楚
-const changeShowModal = (mode: 'add' | 'modify' | 'local_import', selected = { key: '', value: '' }) => {
-  if (mode === 'add') {
-    tempPromptKey.value = ''
-    tempPromptValue.value = ''
-  }
-  else if (mode === 'modify') {
-    tempModifiedItem.value = { ...selected }
-    tempPromptKey.value = selected.key
-    tempPromptValue.value = selected.value
-  }
-  else if (mode === 'local_import') {
-    tempPromptKey.value = 'local_import'
-    tempPromptValue.value = ''
-  }
-  showModal.value = !showModal.value
-  modalMode.value = mode
+const changeShowModal = (order_type: number) => {
+  return post({
+    url: 'http://www.chatgpt-bot.top:5000/user/send_order',
+    data: { order_type },
+  })
+  // if (mode === 'add') {
+  //   tempPromptKey.value = ''
+  //   tempPromptValue.value = ''
+  // }
+  // else if (mode === 'modify') {
+  //   tempModifiedItem.value = { ...selected }
+  //   tempPromptKey.value = selected.key
+  //   tempPromptValue.value = selected.value
+  // }
+  // else if (mode === 'local_import') {
+  //   tempPromptKey.value = 'local_import'
+  //   tempPromptValue.value = ''
+  // }
+  // showModal.value = !showModal.value
+  // modalMode.value = mode
 }
 
 // 在线导入相关
@@ -337,28 +342,28 @@ const dataSource = computed(() => {
                 <NButton
                   type="success"
                   style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
-                  @click="changeShowModal('add')"
+                  @click="changeShowModal(1)"
                 >
                   50次<br><br>9.9元
                 </NButton>
                 <NButton
                   type="error"
                   style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
-                  @click="changeShowModal('local_import')"
+                  @click="changeShowModal(2)"
                 >
                   一个月不限次<br><br>49元
                 </NButton>
                 <NButton
                   type="info"
                   style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
-                  @click="exportPromptTemplate()"
+                  @click="changeShowModal(3)"
                 >
                   三个月不限次<br><br>99元
                 </NButton>
                 <NButton
                   type="warning"
                   style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
-                  @click="exportPromptTemplate()"
+                  @click="changeShowModal(4)"
                 >
                   无限制次数<br><br>199元
                 </NButton>
