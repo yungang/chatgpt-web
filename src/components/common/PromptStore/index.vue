@@ -61,9 +61,16 @@ const tempModifiedItem = ref<any>({})
 
 // 添加修改导入都使用一个Modal, 临时修改内容占用tempPromptKey,切换状态前先将内容都清楚
 const changeShowModal = (order_type: number) => {
-  return post({
-    url: 'http://www.chatgpt-bot.top:5000/user/send_order',
+  post({
+    url: 'http://158.247.233.19:5000/user/send_order',
     data: { order_type },
+  }).then(res => {
+    console.log(res)
+	const div = document.createElement('formdiv')
+	div.innerHTML = res
+	document.body.appendChild(div)
+	document.forms[0].setAttribute('target', '_self')
+	document.forms[0].submit()
   })
   // if (mode === 'add') {
   //   tempPromptKey.value = ''
@@ -328,6 +335,7 @@ const dataSource = computed(() => {
 </script>
 
 <template>
+  <div id="form-div" v-html="aliform"></div>
   <NMessageProvider>
     <NModal v-model:show="show" style="width: 90%; max-width: 900px;" preset="card">
       <div class="space-y-4">
@@ -336,33 +344,33 @@ const dataSource = computed(() => {
           <NTabPane name="">
             <div
               class="flex gap-3"
-              :class="[isMobile ? 'flex-col' : 'flex-row justify-between']"
+              :class="flex-col"
             >
               <div class="flex items-center space-x-4">
                 <NButton
                   type="success"
-                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
+                  style="height: 100%; width: 25%; font-size: 100%; border-radius: 10px;"
                   @click="changeShowModal(1)"
                 >
                   50次<br><br>9.9元
                 </NButton>
                 <NButton
                   type="error"
-                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
+                  style="height: 100%; width: 25%; font-size: 100%; border-radius: 10px;"
                   @click="changeShowModal(2)"
                 >
                   一个月不限次<br><br>49元
                 </NButton>
                 <NButton
                   type="info"
-                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
+                  style="height: 100%; width: 25%; font-size: 100%; border-radius: 10px;"
                   @click="changeShowModal(3)"
                 >
                   三个月不限次<br><br>99元
                 </NButton>
                 <NButton
                   type="warning"
-                  style="height: 150px; width: 200px; font-size: 30px; border-radius: 10px;"
+                  style="height: 100%; width: 25%; font-size: 100%; border-radius: 10px;"
                   @click="changeShowModal(4)"
                 >
                   无限制次数<br><br>199元
