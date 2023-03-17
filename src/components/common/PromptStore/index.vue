@@ -61,7 +61,7 @@ const tempModifiedItem = ref<any>({})
 
 // 添加修改导入都使用一个Modal, 临时修改内容占用tempPromptKey,切换状态前先将内容都清楚
 const changeShowModal = (order_type: number) => {
-  const user = localStorage.getItem('appSetting')['data']['chatgpt_user']
+  const user = JSON.parse(localStorage.getItem('appSetting'))['data']['chatgpt_user']
   if (user === undefined || user === '') {
     alert('无法查询到您的登录信息，请先登录后再试')
     window.location.href = "http://www.chatgpt-bot.top/login/"
