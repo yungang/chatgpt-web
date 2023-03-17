@@ -181,10 +181,10 @@ export const useChatStore = defineStore('chat-store', {
     async reloadRoute(uuid?: number) {
       this.recordState()
       await router.push({ name: 'Chat', params: { uuid } })
-      setting = ss.get('appSetting')
+
       const user = JSON.parse(localStorage.getItem('appSetting'))['data']['chatgpt_user']
-      const url = this.$route.path + '/?id=' + user
-      window.history.replaceState('', '', url)
+      const url = window.location.href + '/?id=' + user
+      window.location.href = url
     },
 
     recordState() {
