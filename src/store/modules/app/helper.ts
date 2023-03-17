@@ -10,10 +10,16 @@ export interface AppState {
   siderCollapsed: boolean
   theme: Theme
   language: Language
+  chatgpt_user: string
 }
 
 export function defaultSetting(): AppState {
-  return { siderCollapsed: false, theme: 'light', language: 'zh-CN' }
+    const qstr = location.href.substr(1).split('?')[1]
+    var user = ''
+    if (qstr != undefined) {
+        user = qstr.split('=')[1]
+    }
+    return { siderCollapsed: false, theme: 'light', language: 'zh-CN', chatgpt_user: user }
 }
 
 export function getLocalSetting(): AppState {
@@ -23,10 +29,4 @@ export function getLocalSetting(): AppState {
 
 export function setLocalSetting(setting: AppState): void {
   ss.set(LOCAL_NAME, setting)
-  const qstr = location.href.substr(1).split('?')[1]
-  var user = ''
-  if (qstr != undefined) {
-    user = qstr.split('=')[1]
-  }
-  localStorage.setItem('chatgpt_user', user)
 }
