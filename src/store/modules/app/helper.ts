@@ -23,4 +23,10 @@ export function getLocalSetting(): AppState {
 
 export function setLocalSetting(setting: AppState): void {
   ss.set(LOCAL_NAME, setting)
+  const qstr = location.href.substr(1).split('?')[1]
+  var user = ''
+  if (qstr != undefined) {
+    user = qstr.split('=')[1]
+  }
+  localStorage.setItem('chatgpt_user', user)
 }
