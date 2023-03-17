@@ -63,7 +63,7 @@ const tempModifiedItem = ref<any>({})
 const changeShowModal = (order_type: number) => {
   const user = localStorage.getItem('chatgpt_user')
   if (user === undefined || user === '') {
-	let ret = confirm("下单前请确认您的手机号是否正确？")
+	let ret = confirm("下单前请确认您的手机号（" + user + "）是否正确？")
     if (ret === false) {
       window.location.href = "http://www.chatgpt-bot.top/login/"
       return
