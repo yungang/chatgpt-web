@@ -33,6 +33,8 @@ export function setLocalSetting(setting: AppState): void {
     if (qstr != undefined) {
         user = qstr.split('=')[1]
     }
-    setting.chatgpt_user = user
+    if (setting['chatgpt_user'].length === 0) {
+        setting.chatgpt_user = user
+    }
     ss.set(LOCAL_NAME, setting)
 }
