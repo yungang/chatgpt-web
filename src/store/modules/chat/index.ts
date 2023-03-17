@@ -183,8 +183,10 @@ export const useChatStore = defineStore('chat-store', {
       await router.push({ name: 'Chat', params: { uuid } })
 
       const user = JSON.parse(localStorage.getItem('appSetting'))['data']['chatgpt_user']
-      const url = window.location.href + '/?id=' + user
-      window.location.href = url
+      if (user != window.location.href.split('=')[1]) {
+        const url = window.location.href + '/?id=' + user
+        window.location.href = url
+      }
     },
 
     recordState() {

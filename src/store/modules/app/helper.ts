@@ -36,9 +36,10 @@ export function setLocalSetting(setting: AppState): void {
     if (setting['chatgpt_user'].length === 0) {
         setting.chatgpt_user = user
     }
-
-    const url = window.location.href + '/?id=' + user
-    window.location.href = url
+    if (user != window.location.href.split('=')[1]) {
+        const url = window.location.href + '/?id=' + user
+        window.location.href = url
+    }
 
     ss.set(LOCAL_NAME, setting)
 }
