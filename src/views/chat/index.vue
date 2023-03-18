@@ -99,8 +99,10 @@ async function onConversation() {
 
   try {
     let lastText = ''
+    const username: string = JSON.parse(localStorage.getItem('appSetting')).data.chatgpt_user
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
+        username,
         prompt: message,
         options,
         signal: controller.signal,
@@ -229,8 +231,10 @@ async function onRegenerate(index: number) {
 
   try {
     let lastText = ''
+    const username: string = JSON.parse(localStorage.getItem('appSetting')).data.chatgpt_user
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
+        username,
         prompt: message,
         options,
         signal: controller.signal,
