@@ -61,26 +61,26 @@ const tempModifiedItem = ref<any>({})
 
 // 添加修改导入都使用一个Modal, 临时修改内容占用tempPromptKey,切换状态前先将内容都清楚
 const changeShowModal = (order_type: number) => {
-  const username = JSON.parse(localStorage.getItem('appSetting'))['data']['chatgpt_user']
+  const username = JSON.parse(localStorage.getItem('appSetting')).data.chatgpt_user
   if (username === undefined || username === '') {
     alert('无法查询到您的登录信息，请先登录后再试')
-    window.location.href = "http://www.chatgpt-bot.top/login/"
+    window.location.href = 'http://www.chatgpt-bot.top/login/'
     return
   }
-  let ret = confirm("下单前请确认您的手机号（" + username + "）是否正确？")
+  const ret = confirm(`下单前请确认您的手机号（${username}）是否正确？`)
   if (ret == false) {
-    window.location.href = "http://www.chatgpt-bot.top/login/"
+    window.location.href = 'http://www.chatgpt-bot.top/login/'
     return
   }
   post({
     url: 'http://158.247.233.19:5000/user/send_order',
     data: { order_type, username },
-  }).then(res => {
-	const div = document.createElement('formdiv')
-	div.innerHTML = res
-	document.body.appendChild(div)
-	document.forms[0].setAttribute('target', '_self')
-	document.forms[0].submit()
+  }).then((res) => {
+    const div = document.createElement('formdiv')
+    div.innerHTML = res
+    document.body.appendChild(div)
+    document.forms[0].setAttribute('target', '_self')
+    document.forms[0].submit()
   })
   // if (mode === 'add') {
   //   tempPromptKey.value = ''
@@ -345,34 +345,45 @@ const dataSource = computed(() => {
 </script>
 
 <template>
-  <div id="form-div" v-html="aliform"></div>
+  <div id="form-div" v-html="aliform" />
   <NMessageProvider>
-    <NModal v-model:show="show" style="width: 90%; max-width: 500px;" preset="card">
-      <div class="space-y-4">
+    <NModal v-model:show="show" style="width: 100%; max-width: 200px;" preset="card">
+      <div class="space-y-0">
         <NTabs type="segment">
-          <!-- <NTabPane name="local" style="font-size: 50px;" :tab="$t('套餐类型')"> -->
           <NTabPane name="">
             <div
-              class="flex gap-3"
-              :class="flex-col"
+              class="flex gap-4"
+              :class="flex - col"
             >
-              <div class="flex items-center space-x-4">
+              <div class="items-center space-x-0.5 space-y-0.5">
                 <NButton
                   type="success"
+                  style="width: 150px;height: 50px;"
                   @click="changeShowModal(1)"
-                >50次<br>9.9元</NButton>
+                >
+                  50次<br>-----<br>9.9元
+                </NButton>
                 <NButton
                   type="error"
+                  style="width: 150px;height: 50px;"
                   @click="changeShowModal(2)"
-                >一个月包月<br>49元</NButton>
+                >
+                  一个月包月<br>-----<br>49元
+                </NButton>
                 <NButton
                   type="info"
+                  style="width: 150px;height: 50px;"
                   @click="changeShowModal(3)"
-                >三个月包月<br>99元</NButton>
+                >
+                  三个月包月<br>-----<br>99元
+                </NButton>
                 <NButton
                   type="warning"
+                  style="width: 150px;height: 50px;"
                   @click="changeShowModal(4)"
-                >无限制次数<br>199元</NButton>
+                >
+                  无限制次数<br>-----<br>199元
+                </NButton>
               </div>
               <!-- <div class="flex items-center">
                 <NInput v-model:value="searchValue" style="width: 100%" />
