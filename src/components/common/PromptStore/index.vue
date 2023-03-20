@@ -67,11 +67,11 @@ const changeShowModal = (order_type: number) => {
     window.location.href = 'http://www.chatgpt-bot.top/login/'
     return
   }
-  const ret = confirm(`下单前请确认您的手机号（${username}）是否正确？`)
-  if (ret == false) {
-    window.location.href = 'http://www.chatgpt-bot.top/login/'
-    return
-  }
+//   const ret = confirm(`下单前请确认您的手机号（${username}）是否正确？`)
+//   if (ret == false) {
+//     window.location.href = 'http://www.chatgpt-bot.top/login/'
+//     return
+//   }
   post({
     url: 'http://158.247.233.19:5000/user/send_order',
     data: { order_type, username },
