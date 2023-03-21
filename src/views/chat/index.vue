@@ -10,7 +10,7 @@ import { useChat } from './hooks/useChat'
 import { useCopyCode } from './hooks/useCopyCode'
 import { useUsingContext } from './hooks/useUsingContext'
 import HeaderComponent from './components/Header/index.vue'
-import { HoverButton, SvgIcon } from '@/components/common'
+import { HoverButton, PromptStore, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useChatStore, usePromptStore } from '@/store'
 import { fetchChatAPIProcess } from '@/api'
@@ -19,7 +19,7 @@ import { t } from '@/locales'
 let controller = new AbortController()
 
 const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
-
+const show = ref(false)
 const route = useRoute()
 const dialog = useDialog()
 const ms = useMessage()
@@ -42,9 +42,9 @@ const prompt = ref<string>('')
 const loading = ref<boolean>(false)
 
 // 添加PromptStore
-const promptStore = usePromptStore()
+const upromptStore = usePromptStore()
 // 使用storeToRefs，保证store修改后，联想部分能够重新渲染
-const { promptList: promptTemplate } = storeToRefs<any>(promptStore)
+const { promptList: promptTemplate } = storeToRefs<any>(upromptStore)
 
 function handleSubmit() {
   onConversation()
@@ -510,7 +510,12 @@ onUnmounted(() => {
     <footer :class="footerClass">
       <div class="w-full max-w-screen-xl m-auto">
         <div class="flex items-center justify-between space-x-2">
-          <HoverButton @click="handleClear">
+          <HoverButton v-if="isMobile" @click="show = true">
+            <span class="text-xl text-[#4f555e] dark:text-white">
+              <SvgIcon icon="ri:vip-line" />
+            </span>
+          </HoverButton>
+          <HoverButton v-if="!isMobile" @click="handleClear">
             <span class="text-xl text-[#4f555e] dark:text-white">
               <SvgIcon icon="ri:delete-bin-line" />
             </span>
@@ -550,4 +555,5 @@ onUnmounted(() => {
       </div>
     </footer>
   </div>
+  <PromptStore v-model:visible="show" />
 </template>

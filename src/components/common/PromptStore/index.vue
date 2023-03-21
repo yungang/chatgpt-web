@@ -361,28 +361,29 @@ const dataSource = computed(() => {
                   style="width: 150px;height: 50px;"
                   @click="changeShowModal(1)"
                 >
-                  50次<br>-----<br>9.9元
+                  50次<br>-----<br>
+                  9.9元
                 </NButton>
                 <NButton
                   type="error"
                   style="width: 150px;height: 50px;"
                   @click="changeShowModal(2)"
                 >
-                  一个月包月<br>-----<br>49元
+                  30天套餐<br>-----<br>49元
                 </NButton>
                 <NButton
                   type="info"
                   style="width: 150px;height: 50px;"
                   @click="changeShowModal(3)"
                 >
-                  三个月包月<br>-----<br>99元
+                  90天套餐<br>-----<br>99元
                 </NButton>
                 <NButton
                   type="warning"
                   style="width: 150px;height: 50px;"
                   @click="changeShowModal(4)"
                 >
-                  无限制次数<br>-----<br>199元
+                  无限制次数套餐<br>-----<br>199元
                 </NButton>
               </div>
               <!-- <div class="flex items-center">
