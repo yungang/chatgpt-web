@@ -9,6 +9,7 @@ interface Props {
 
 interface Emit {
   (ev: 'export'): void
+  (ev: 'toggleChangeModel'): void
   (ev: 'toggleUsingContext'): void
 }
 
@@ -34,6 +35,10 @@ function onScrollToTop() {
 
 function handleExport() {
   emit('export')
+}
+
+function toggleChangeModel() {
+  emit('toggleChangeModel')
 }
 
 function toggleUsingContext() {
@@ -62,6 +67,11 @@ function toggleUsingContext() {
         {{ currentChatHistory?.title ?? '' }}
       </h1>
       <div class="flex items-center space-x-2">
+        <HoverButton @click="toggleChangeModel">
+          <span class="text-xl text-[#4b9e5f]">
+            <SvgIcon icon="ri:arrow-left-right-line" />
+          </span>
+        </HoverButton>
         <HoverButton @click="toggleUsingContext">
           <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
             <SvgIcon icon="ri:chat-history-line" />

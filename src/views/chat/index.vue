@@ -9,6 +9,7 @@ import { useScroll } from './hooks/useScroll'
 import { useChat } from './hooks/useChat'
 import { useCopyCode } from './hooks/useCopyCode'
 import { useUsingContext } from './hooks/useUsingContext'
+import { useChangeModel } from './hooks/useChangeModel'
 import HeaderComponent from './components/Header/index.vue'
 import { HoverButton, PromptStore, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
@@ -31,6 +32,7 @@ useCopyCode()
 const { isMobile } = useBasicLayout()
 const { addChat, updateChat, updateChatSome, getChatByUuidAndIndex } = useChat()
 const { scrollRef, scrollToBottom } = useScroll()
+const { changeModel, toggleChangeModel } = useChangeModel()
 const { usingContext, toggleUsingContext } = useUsingContext()
 
 const { uuid } = route.params as { uuid: string }
@@ -430,9 +432,9 @@ const renderOption = (option: { label: string }) => {
 }
 
 const placeholder = computed(() => {
-  if (isMobile.value)
-    return t('chat.placeholderMobile')
-  return t('chat.placeholder')
+  if (changeModel.value)
+    return ('ChatGPT-3.5-Turbo')
+  return ('ChatGPT-4')
 })
 
 const buttonDisabled = computed(() => {
@@ -462,6 +464,7 @@ onUnmounted(() => {
       v-if="isMobile"
       :using-context="usingContext"
       @export="handleExport"
+      @toggle-change-model="toggleChangeModel"
       @toggle-using-context="toggleUsingContext"
     />
     <main class="flex-1 overflow-hidden">
@@ -478,7 +481,7 @@ onUnmounted(() => {
           <template v-if="!dataSources.length">
             <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
               <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" />
-              <span>Aha~</span>
+              <span>当前没有聊天信息</span>
             </div>
           </template>
           <template v-else>
@@ -528,6 +531,11 @@ onUnmounted(() => {
           <HoverButton v-if="!isMobile" @click="toggleUsingContext">
             <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
               <SvgIcon icon="ri:chat-history-line" />
+            </span>
+          </HoverButton>
+          <HoverButton v-if="!isMobile" @click="toggleChangeModel">
+            <span class="text-xl text-[#4b9e5f]">
+              <SvgIcon icon="ri:arrow-left-right-line" />
             </span>
           </HoverButton>
           <NAutoComplete v-model:value="prompt" :options="searchOptions" :render-label="renderOption">
