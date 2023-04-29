@@ -61,8 +61,10 @@ async function onConversation() {
   if (!message || message.trim() === '')
     return
 
-  let model_name = 'gpt-3.5-turbo'
-  if (changeModel.value)
+  let model_name = ''
+  if (!changeModel.value)
+    model_name = 'gpt-3.5-turbo'
+  else
     model_name = 'gpt-4'
 
   controller = new AbortController()
@@ -72,7 +74,6 @@ async function onConversation() {
     {
       dateTime: new Date().toLocaleString(),
       text: message,
-      model: model_name,
       inversion: true,
       error: false,
       conversationOptions: null,
@@ -95,7 +96,6 @@ async function onConversation() {
     {
       dateTime: new Date().toLocaleString(),
       text: '',
-      model: model_name,
       loading: true,
       inversion: false,
       error: false,
@@ -111,6 +111,7 @@ async function onConversation() {
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         username,
+        model: model_name,
         prompt: message,
         options,
         signal: controller.signal,
@@ -237,12 +238,19 @@ async function onRegenerate(index: number) {
     },
   )
 
+  let model_name = ''
+  if (!changeModel.value)
+    model_name = 'gpt-3.5-turbo'
+  else
+    model_name = 'gpt-4'
+
   try {
     let lastText = ''
     const username: string = JSON.parse(localStorage.getItem('appSetting')).data.chatgpt_user
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         username,
+        model: model_name,
         prompt: message,
         options,
         signal: controller.signal,
@@ -438,7 +446,7 @@ const renderOption = (option: { label: string }) => {
 }
 
 const placeholder = computed(() => {
-  if (changeModel.value)
+  if (!changeModel.value)
     return ('ChatGPT-3.5-Turbo')
   return ('ChatGPT-4')
 })

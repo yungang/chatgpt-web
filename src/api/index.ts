@@ -2,13 +2,14 @@ import type { AxiosProgressEvent, GenericAbortSignal } from 'axios'
 import { post } from '@/utils/request'
 
 export function fetchChatAPI<T = any>(
+  model: string,
   prompt: string,
   options?: { conversationId?: string; parentMessageId?: string },
   signal?: GenericAbortSignal,
 ) {
   return post<T>({
     url: '/chat',
-    data: { prompt, options },
+    data: { model, prompt, options },
     signal,
   })
 }
@@ -22,6 +23,7 @@ export function fetchChatConfig<T = any>() {
 export function fetchChatAPIProcess<T = any>(
   params: {
     username: string
+    model: string
     prompt: string
     options?: { conversationId?: string; parentMessageId?: string }
     signal?: GenericAbortSignal
@@ -29,7 +31,7 @@ export function fetchChatAPIProcess<T = any>(
 ) {
   return post<T>({
     url: `/chat-process/?username=${params.username}`,
-    data: { prompt: params.prompt, options: params.options },
+    data: { model: params.model, prompt: params.prompt, options: params.options },
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,
   })
