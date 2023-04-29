@@ -61,6 +61,10 @@ async function onConversation() {
   if (!message || message.trim() === '')
     return
 
+  let model_name = 'gpt-3.5-turbo'
+  if (changeModel.value)
+    model_name = 'gpt-4'
+
   controller = new AbortController()
 
   addChat(
@@ -68,6 +72,7 @@ async function onConversation() {
     {
       dateTime: new Date().toLocaleString(),
       text: message,
+      model: model_name,
       inversion: true,
       error: false,
       conversationOptions: null,
@@ -90,6 +95,7 @@ async function onConversation() {
     {
       dateTime: new Date().toLocaleString(),
       text: '',
+      model: model_name,
       loading: true,
       inversion: false,
       error: false,
