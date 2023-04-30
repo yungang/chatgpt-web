@@ -67,11 +67,11 @@ const changeShowModal = (order_type: number) => {
     window.location.href = 'http://www.chatgpt-bot.top/login/'
     return
   }
-//   const ret = confirm(`下单前请确认您的手机号（${username}）是否正确？`)
-//   if (ret == false) {
-//     window.location.href = 'http://www.chatgpt-bot.top/login/'
-//     return
-//   }
+  //   const ret = confirm(`下单前请确认您的手机号（${username}）是否正确？`)
+  //   if (ret == false) {
+  //     window.location.href = 'http://www.chatgpt-bot.top/login/'
+  //     return
+  //   }
   post({
     url: 'http://158.247.233.19:5000/user/send_order',
     data: { order_type, username },
@@ -347,7 +347,7 @@ const dataSource = computed(() => {
 <template>
   <div id="form-div" v-html="aliform" />
   <NMessageProvider>
-    <NModal v-model:show="show" style="width: 100%; max-width: 200px;" preset="card">
+    <NModal v-model:show="show" style="width: 100%; max-width: 250px;" preset="card">
       <div class="space-y-0">
         <NTabs type="segment">
           <NTabPane name="">
@@ -358,32 +358,25 @@ const dataSource = computed(() => {
               <div class="items-center space-x-0.5 space-y-0.5">
                 <NButton
                   type="success"
-                  style="width: 150px;height: 50px;"
+                  style="width: 200px;height: 60px;"
                   @click="changeShowModal(1)"
                 >
-                  50次<br>-----<br>
-                  9.9元
+                  30天<br>[模型3.5无限次]<br>-----<br>
+                  49元
                 </NButton>
                 <NButton
                   type="error"
-                  style="width: 150px;height: 50px;"
+                  style="width: 200px;height: 60px;"
                   @click="changeShowModal(2)"
                 >
-                  30天套餐<br>-----<br>49元
-                </NButton>
-                <NButton
-                  type="info"
-                  style="width: 150px;height: 50px;"
-                  @click="changeShowModal(3)"
-                >
-                  90天套餐<br>-----<br>99元
+                  30天<br>[模型3.5无限次+4.0 500次]<br>-----<br>79元
                 </NButton>
                 <NButton
                   type="warning"
-                  style="width: 150px;height: 50px;"
-                  @click="changeShowModal(4)"
+                  style="width: 200px;height: 60px;"
+                  @click="changeShowModal(3)"
                 >
-                  无限制次数套餐<br>-----<br>199元
+                  30天<br>[3.5无限次+4.0 2000次]<br>-----<br>198元
                 </NButton>
               </div>
               <!-- <div class="flex items-center">
