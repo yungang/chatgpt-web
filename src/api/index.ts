@@ -30,7 +30,7 @@ export function fetchChatAPIProcess<T = any>(
     onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void },
 ) {
   return post<T>({
-    url: `/chat-process/?username=${params.username}`,
+    url: `/chat-process/${params.model}/?username=${params.username}`,
     data: { model: params.model, prompt: params.prompt, options: params.options },
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,
