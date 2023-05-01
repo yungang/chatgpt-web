@@ -347,7 +347,7 @@ const dataSource = computed(() => {
 <template>
   <div id="form-div" v-html="aliform" />
   <NMessageProvider>
-    <NModal v-model:show="show" style="width: 100%; max-width: 250px;" preset="card">
+    <NModal v-model:show="show" style="width: 100%; max-width: 300px;" preset="card">
       <div class="space-y-0">
         <NTabs type="segment">
           <NTabPane name="">
@@ -358,25 +358,25 @@ const dataSource = computed(() => {
               <div class="items-center space-x-0.5 space-y-0.5">
                 <NButton
                   type="success"
-                  style="width: 200px;height: 60px;"
+                  style="width: 250px;height: 60px;"
                   @click="changeShowModal(1)"
                 >
-                  30天<br>[模型3.5无限次]<br>-----<br>
+                  30天<br>[GPT4 500次]<br>-----<br>
                   49元
                 </NButton>
                 <NButton
                   type="error"
-                  style="width: 200px;height: 60px;"
+                  style="width: 250px;height: 60px;"
                   @click="changeShowModal(2)"
                 >
-                  30天<br>[模型3.5无限次+4.0 500次]<br>-----<br>79元
+                  30天<br>[GPT-4 500次 + GPT-3.5包月]<br>-----<br>79元
                 </NButton>
                 <NButton
                   type="warning"
-                  style="width: 200px;height: 60px;"
+                  style="width: 250px;height: 60px;"
                   @click="changeShowModal(3)"
                 >
-                  30天<br>[3.5无限次+4.0 2000次]<br>-----<br>198元
+                  30天<br>[GPT-4 2000次 + GPT-3.5包月]<br>-----<br>198元
                 </NButton>
               </div>
               <!-- <div class="flex items-center">
